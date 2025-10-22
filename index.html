@@ -1,12 +1,11 @@
+<!doctype html>
+<html lang="ko">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>오사카 2박3일 가족여행 지도 (공유용)</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.js"></script>
 <style>
   html,body,#map { height:100%; margin:0; padding:0; }
   .leaflet-popup-content { font-size:15px; line-height:1.4; }
@@ -21,92 +20,63 @@
 <div class="topbar">
   <strong>오사카 2박3일 가족여행</strong><br/>
   <div class="legend">
-    <span style="color:#1E90FF">●</span> 숙소 &nbsp;
-    <span style="color:#32CD32">●</span> 점심 &nbsp;
-    <span style="color:#FF4500">●</span> 저녁 &nbsp;
-    <span style="color:#FFA500">●</span> 관광지 &nbsp;
-    <span style="color:#8A2BE2">●</span> 카페/간식
+    <span style="color:#1E90FF">●</span> 1일차 &nbsp;
+    <span style="color:#32CD32">●</span> 2일차 &nbsp;
+    <span style="color:#FF4500">●</span> 3일차
   </div>
 </div>
 <div class="footernote">팁: 마커 팝업의 '길찾기 (Google Maps)'을 눌러 네비게이션을 시작하세요.</div>
-
 <script>
 var map = L.map('map').setView([34.6690,135.5017], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'© OpenStreetMap contributors'}).addTo(map);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '© OpenStreetMap contributors'
-}).addTo(map);
-
-function makeMarker(lat, lon, title, descr, hours, link, markerOptions) {
+function makeMarker(lat, lon, title, descr, hours, link, color) {
+  var marker = L.circleMarker([lat,lon], {color: color, radius:6, fillOpacity:0.9}).addTo(map);
   var popup = '<b>' + title + '</b><br/>' + descr;
   if(hours) popup += '<br/><b>운영시간:</b> ' + hours;
   if(link) popup += '<br/><a class="linkbtn" href="' + link + '" target="_blank">공식/예약 페이지 열기</a>';
   popup += '<br/><a href="https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lon + '" target="_blank">길찾기 (Google Maps)</a>';
-  var marker = L.marker([lat,lon], markerOptions).addTo(map);
   marker.bindPopup(popup);
   return marker;
 }
 
-// AwesomeMarkers
-var blueIcon = L.AwesomeMarkers.icon({icon: 'hotel', markerColor: 'blue', prefix: 'fa'});
-var greenIcon = L.AwesomeMarkers.icon({icon: 'cutlery', markerColor: 'green', prefix: 'fa'});
-var redIcon = L.AwesomeMarkers.icon({icon: 'cutlery', markerColor: 'red', prefix: 'fa'});
-var orangeIcon = L.AwesomeMarkers.icon({icon: 'info-circle', markerColor: 'orange', prefix: 'fa'});
-var purpleIcon = L.AwesomeMarkers.icon({icon: 'coffee', markerColor: 'purple', prefix: 'fa'});
-
-// Places with hours & links
-var places = [
-  // 1일차
-  {lat:34.6749, lon:135.5022, title:'소테츠 프레사 인 오사카 신사이바시', descr:'호텔 체크인 및 짐 보관', hours:'24시간 프론트', link:'https://www.sotetsu-hotels.com/fresa-inn/osaka-shinsaibashi/overview/', icon: blueIcon},
-  {lat:34.6689, lon:135.5021, title:'미즈노 (Mizuno)', descr:'오코노미야키 맛집', hours:'11:00–21:00 (일요일 변동)', link:'https://tabelog.com/en/osaka/A2701/A270202/27000495/', icon: greenIcon},
-  {lat:34.6692, lon:135.5041, title:'치보 (Chibo)', descr:'오사카 전통 오코노미야키', hours:'11:00–22:00', link:'https://chibo.com', icon: greenIcon},
-  {lat:34.6700, lon:135.5038, title:'츠루동탄 소에몬초점 (Tsurutontan)', descr:'크림우동 — 유아용 메뉴 가능', hours:'11:00–23:00', link:'https://tsurutontan.co.jp', icon: greenIcon},
-  {lat:34.6687, lon:135.5018, title:'도톤보리', descr:'도보 산책/글리코사인', hours:'상시', link:'https://osaka-info.jp/en/', icon: orangeIcon},
-  {lat:34.6685, lon:135.4955, title:'아메리카무라 (Americamura)', descr:'카페/쇼핑 거리', hours:'상점별 상이', link:'https://osaka-info.jp/en/', icon: purpleIcon},
-  {lat:34.6665, lon:135.5015, title:'규카츠 모토무라 (Gyukatsu Motomura)', descr:'규카츠 정식', hours:'11:00–22:00', link:'https://motomura.co.jp', icon: redIcon},
-  {lat:34.6658, lon:135.5025, title:'우오신 (Uoshin Sushi)', descr:'초밥 세트 (가족 가능)', hours:'11:00–22:00', link:'https://tabelog.com/en/osaka/', icon: redIcon},
-  {lat:34.7055, lon:135.4920, title:'우메다 스카이 빌딩', descr:'공중정원 전망대', hours:'10:00–22:30', link:'https://www.kuchu-teien.com/eng', icon: orangeIcon},
-
-  // 2일차
-  {lat:34.6749, lon:135.5022, title:'숙소 조식 / 인근 카페', descr:'아침 식사 옵션', hours:'호텔 조식 07:00–09:30', link:'', icon: purpleIcon},
-  {lat:34.6542, lon:135.4289, title:'오사카 카이유칸 (Kaiyukan)', descr:'수족관 — 유모차 대여 가능', hours:'10:00–20:00 (계절별 변동)', link:'https://www.kaiyukan.com/language/eng/', icon: orangeIcon},
-  {lat:34.6540, lon:135.4275, title:'하나비 / 카이유테이 (Hanabi / Kaiyutei)', descr:'텐포잔 고급 해산물', hours:'11:00–21:00', link:'', icon: greenIcon},
-  {lat:34.6538, lon:135.4260, title:'타코야키랩 / 앗치치혼포', descr:'타코야키 간식', hours:'10:00–22:00', link:'', icon: purpleIcon},
-  {lat:34.6545, lon:135.4300, title:'산타마리아 유람선 (Santa Maria)', descr:'유람선 크루즈', hours:'운항시간 변동 (계절별)', link:'https://www.santa-maria-cruise.co.jp', icon: orangeIcon},
-  {lat:34.6537, lon:135.4278, title:'텐포잔 대관람차', descr:'대관람차 (아기 탑승 가능)', hours:'10:00–22:00', link:'https://www.senyo.co.jp/tempozan/en/', icon: orangeIcon},
-  {lat:34.6541, lon:135.4280, title:'리쿠로오지상 치즈케이크 카페 (Rikuro Ojisan)', descr:'치즈케이크 & 카페', hours:'10:00–20:00', link:'https://www.rikuro.co.jp', icon: purpleIcon},
-  {lat:34.6660, lon:135.5020, title:'스시로바타 키타로스시', descr:'화로 초밥 (저녁)', hours:'17:00–23:00', link:'', icon: redIcon},
-
-  // 3일차
-  {lat:34.6749, lon:135.5022, title:'숙소 조식 / 체크아웃', descr:'짐 보관 가능', hours:'프론트 문의', link:'', icon: blueIcon},
-  {lat:34.6873, lon:135.5262, title:'오사카성 천수각', descr:'오사카의 상징', hours:'9:00–17:00', link:'https://www.osakacastle.net/english/', icon: orangeIcon},
-  {lat:34.6580, lon:135.5330, title:'사이제리야 / 스시로', descr:'가족식 옵션', hours:'10:00–22:00', link:'', icon: greenIcon},
-  {lat:34.6695, lon:135.5025, title:'와규 이다텐 (Wagyu Idaten)', descr:'고급 와규 덮밥 옵션', hours:'11:00–15:00, 17:00–21:00', link:'', icon: redIcon},
-  {lat:34.5532, lon:135.5190, title:'덴노지 동물원 / 텐시바 공원', descr:'동물원 & 공원', hours:'9:30–17:00', link:'https://www.tennojizoo.jp', icon: orangeIcon},
-  {lat:34.6642, lon:135.5028, title:'551 호라이 본점', descr:'교자 & 간식', hours:'9:00–21:00', link:'https://www.551horai.co.jp', icon: purpleIcon},
-  {lat:34.6640, lon:135.5027, title:'난바 OCAT', descr:'리무진 버스 승차장', hours:'운영시간 변동', link:'', icon: orangeIcon}
+// 1일차
+var day1_places = [
+{lat:34.6749, lon:135.5022, title:'소테츠 프레사 인 오사카 신사이바시', descr:'호텔 체크인', hours:'24시간', link:'https://www.sotetsu-hotels.com/fresa-inn/osaka-shinsaibashi/overview/'},
+{lat:34.6689, lon:135.5021, title:'미즈노 (Mizuno)', descr:'오코노미야키 맛집', hours:'11:00–21:00', link:'https://tabelog.com/en/osaka/A2701/A270202/27000495/'},
+{lat:34.6692, lon:135.5041, title:'치보 (Chibo)', descr:'오코노미야키', hours:'11:00–22:00', link:'https://chibo.com'},
+{lat:34.6700, lon:135.5038, title:'츠루동탄', descr:'크림우동', hours:'11:00–23:00', link:'https://tsurutontan.co.jp'},
+{lat:34.6687, lon:135.5018, title:'도톤보리', descr:'도보 산책', hours:'상시', link:'https://osaka-info.jp/en/'}
 ];
+var day1_markers = []; day1_places.forEach(function(p){ day1_markers.push(makeMarker(p.lat,p.lon,p.title,p.descr,p.hours,p.link,'#1E90FF')); });
+var day1_poly = L.polyline(day1_places.map(p => [p.lat,p.lon]), {color:'#1E90FF', weight:4, opacity:0.8}).addTo(map);
 
-// Add markers
-var markerList = [];
-places.forEach(function(p){
-  var m = makeMarker(p.lat, p.lon, p.title, p.descr, p.hours, p.link, {icon:p.icon});
-  markerList.push(m);
-});
+// 2일차
+var day2_places = [
+{lat:34.6542, lon:135.4289, title:'오사카 카이유칸', descr:'수족관', hours:'10:00–20:00', link:'https://www.kaiyukan.com/language/eng/'},
+{lat:34.6540, lon:135.4275, title:'하나비 / 카이유테이', descr:'고급 해산물', hours:'11:00–21:00', link:''},
+{lat:34.6541, lon:135.4265, title:'타코야키랩', descr:'타코야키 간식', hours:'10:00–22:00', link:''},
+{lat:34.6545, lon:135.4300, title:'산타마리아 유람선', descr:'크루즈', hours:'운항시간 변동', link:'https://www.santa-maria-cruise.co.jp'},
+{lat:34.6537, lon:135.4278, title:'텐포잔 대관람차', descr:'대관람차', hours:'10:00–22:00', link:'https://www.senyo.co.jp/tempozan/en/'}
+];
+var day2_markers = []; day2_places.forEach(function(p){ day2_markers.push(makeMarker(p.lat,p.lon,p.title,p.descr,p.hours,p.link,'#32CD32')); });
+var day2_poly = L.polyline(day2_places.map(p => [p.lat,p.lon]), {color:'#32CD32', weight:4, opacity:0.8}).addTo(map);
 
-// Polylines for each day
-var day1 = [[34.6749,135.5022],[34.6689,135.5021],[34.6687,135.5018],[34.6685,135.4955],[34.7055,135.4920]];
-var day2 = [[34.6749,135.5022],[34.6542,135.4289],[34.6540,135.4275],[34.6545,135.4300]];
-var day3 = [[34.6749,135.5022],[34.6873,135.5262],[34.5532,135.5190],[34.6640,135.5027]];
+// 3일차
+var day3_places = [
+{lat:34.6873, lon:135.5262, title:'오사카성 천수각', descr:'오사카의 상징', hours:'9:00–17:00', link:'https://www.osakacastle.net/english/'},
+{lat:34.6580, lon:135.5330, title:'사이제리야 / 스시로', descr:'가족식 옵션', hours:'10:00–22:00', link:''},
+{lat:34.6695, lon:135.5025, title:'와규 이다텐', descr:'고급 와규 덮밥', hours:'11:00–15:00,17:00–21:00', link:''},
+{lat:34.5532, lon:135.5190, title:'덴노지 동물원 / 텐시바 공원', descr:'동물원 & 공원', hours:'9:30–17:00', link:'https://www.tennojizoo.jp'}
+];
+var day3_markers = []; day3_places.forEach(function(p){ day3_markers.push(makeMarker(p.lat,p.lon,p.title,p.descr,p.hours,p.link,'#FF4500')); });
+var day3_poly = L.polyline(day3_places.map(p => [p.lat,p.lon]), {color:'#FF4500', weight:4, opacity:0.8}).addTo(map);
 
-var poly1 = L.polyline(day1, {color:'#1E90FF', weight:4, opacity:0.8}).addTo(map);
-var poly2 = L.polyline(day2, {color:'#32CD32', weight:4, opacity:0.8}).addTo(map);
-var poly3 = L.polyline(day3, {color:'#FF4500', weight:4, opacity:0.8}).addTo(map);
-
-var group = new L.featureGroup(markerList.concat([poly1,poly2,poly3]));
+// Fit map
+var allMarkers = day1_markers.concat(day2_markers, day3_markers);
+var allPolylines = [day1_poly, day2_poly, day3_poly];
+var group = new L.featureGroup(allMarkers.concat(allPolylines));
 map.fitBounds(group.getBounds().pad(0.15));
-
 </script>
 </body>
 </html>
