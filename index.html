@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오사카 2박3일 가족여행 지도 (공유용)</title>
+<title>오사카 2박3일 가족여행 지도 (업데이트)</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
@@ -46,7 +46,12 @@ var day1_places = [
 {lat:34.6689, lon:135.5021, title:'미즈노 (Mizuno)', descr:'오코노미야키 맛집', hours:'11:00–21:00', link:'https://tabelog.com/en/osaka/A2701/A270202/27000495/'},
 {lat:34.6692, lon:135.5041, title:'치보 (Chibo)', descr:'오코노미야키', hours:'11:00–22:00', link:'https://chibo.com'},
 {lat:34.6700, lon:135.5038, title:'츠루동탄', descr:'크림우동', hours:'11:00–23:00', link:'https://tsurutontan.co.jp'},
-{lat:34.6687, lon:135.5018, title:'도톤보리', descr:'도보 산책', hours:'상시', link:'https://osaka-info.jp/en/'}
+{lat:34.6687, lon:135.5018, title:'도톤보리', descr:'도보 산책', hours:'상시', link:'https://osaka-info.jp/en/'},
+{lat:34.6691, lon:135.5002, title:'글리코사인', descr:'도톤보리 상징', hours:'상시', link:'https://osaka-info.jp/en/'},
+{lat:34.6679, lon:135.5005, title:'아메리카무라', descr:'쇼핑거리 & 카페', hours:'상시', link:'https://osaka-info.jp/en/'},
+{lat:34.6675, lon:135.5010, title:'규카츠 모토무라', descr:'규카츠 정식', hours:'11:00–22:00', link:'https://tabelog.com/en/osaka/A2701/A270202/27001234/'},
+{lat:34.6680, lon:135.5030, title:'우오신', descr:'초밥', hours:'11:00–22:00', link:'https://tabelog.com/en/osaka/A2701/A270202/27005678/'},
+{lat:34.7054, lon:135.4959, title:'우메다 공중정원', descr:'야경 전망대', hours:'10:00–22:30', link:'https://www.skybuilding.co.jp/en/observatory/')}
 ];
 var day1_markers = []; day1_places.forEach(function(p){ day1_markers.push(makeMarker(p.lat,p.lon,p.title,p.descr,p.hours,p.link,'#1E90FF')); });
 var day1_poly = L.polyline(day1_places.map(p => [p.lat,p.lon]), {color:'#1E90FF', weight:4, opacity:0.8}).addTo(map);
@@ -56,8 +61,11 @@ var day2_places = [
 {lat:34.6542, lon:135.4289, title:'오사카 카이유칸', descr:'수족관', hours:'10:00–20:00', link:'https://www.kaiyukan.com/language/eng/'},
 {lat:34.6540, lon:135.4275, title:'하나비 / 카이유테이', descr:'고급 해산물', hours:'11:00–21:00', link:''},
 {lat:34.6541, lon:135.4265, title:'타코야키랩', descr:'타코야키 간식', hours:'10:00–22:00', link:''},
+{lat:34.6543, lon:135.4268, title:'앗치치혼포', descr:'타코야키', hours:'10:00–22:00', link:''},
 {lat:34.6545, lon:135.4300, title:'산타마리아 유람선', descr:'크루즈', hours:'운항시간 변동', link:'https://www.santa-maria-cruise.co.jp'},
-{lat:34.6537, lon:135.4278, title:'텐포잔 대관람차', descr:'대관람차', hours:'10:00–22:00', link:'https://www.senyo.co.jp/tempozan/en/'}
+{lat:34.6537, lon:135.4278, title:'텐포잔 대관람차', descr:'대관람차', hours:'10:00–22:00', link:'https://www.senyo.co.jp/tempozan/en/'},
+{lat:34.6539, lon:135.4276, title:'텐포잔 마켓플레이스 / 리쿠로오지상', descr:'쇼핑 & 치즈케이크', hours:'10:00–21:00', link:'https://www.rocro.co.jp'},
+{lat:34.6550, lon:135.4285, title:'스시로바타 키타로스시', descr:'화로 초밥', hours:'11:00–22:00', link:''}
 ];
 var day2_markers = []; day2_places.forEach(function(p){ day2_markers.push(makeMarker(p.lat,p.lon,p.title,p.descr,p.hours,p.link,'#32CD32')); });
 var day2_poly = L.polyline(day2_places.map(p => [p.lat,p.lon]), {color:'#32CD32', weight:4, opacity:0.8}).addTo(map);
@@ -67,7 +75,10 @@ var day3_places = [
 {lat:34.6873, lon:135.5262, title:'오사카성 천수각', descr:'오사카의 상징', hours:'9:00–17:00', link:'https://www.osakacastle.net/english/'},
 {lat:34.6580, lon:135.5330, title:'사이제리야 / 스시로', descr:'가족식 옵션', hours:'10:00–22:00', link:''},
 {lat:34.6695, lon:135.5025, title:'와규 이다텐', descr:'고급 와규 덮밥', hours:'11:00–15:00,17:00–21:00', link:''},
-{lat:34.5532, lon:135.5190, title:'덴노지 동물원 / 텐시바 공원', descr:'동물원 & 공원', hours:'9:30–17:00', link:'https://www.tennojizoo.jp'}
+{lat:34.5532, lon:135.5190, title:'덴노지 동물원 / 텐시바 공원', descr:'동물원 & 공원', hours:'9:30–17:00', link:'https://www.tennojizoo.jp'},
+{lat:34.5535, lon:135.5185, title:'카도야쇼쿠도 츠케멘 / 카페', descr:'간식', hours:'10:00–20:00', link:''},
+{lat:34.6630, lon:135.5025, title:'551 호라이 본점', descr:'교자 포장', hours:'10:00–21:00', link:''},
+{lat:34.6665, lon:135.5010, title:'난바 OCAT', descr:'리무진/공항 이동', hours:'24시간', link:'https://www.ocat.co.jp'}
 ];
 var day3_markers = []; day3_places.forEach(function(p){ day3_markers.push(makeMarker(p.lat,p.lon,p.title,p.descr,p.hours,p.link,'#FF4500')); });
 var day3_poly = L.polyline(day3_places.map(p => [p.lat,p.lon]), {color:'#FF4500', weight:4, opacity:0.8}).addTo(map);
