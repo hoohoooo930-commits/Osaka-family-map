@@ -1,11 +1,12 @@
-html_content = """<!doctype html>
+<!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오사카 2박3일 가족여행 지도 (v5 최신)</title>
+<title>오사카 2박3일 가족여행 지도 (완전판)</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.js"></script>
 <style>
@@ -18,7 +19,7 @@ html_content = """<!doctype html>
 <body>
 <div id="map"></div>
 <div class="topbar">
-  <strong>오사카 2박3일 가족여행 지도 (v5)</strong><br/>
+  <strong>오사카 2박3일 가족여행 지도 (완전판)</strong><br/>
   <div class="legend">
     <span style="color:#1E90FF;">●</span> 1일차 &nbsp;
     <span style="color:#32CD32;">●</span> 2일차 &nbsp;
@@ -35,58 +36,83 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 function makeMarker(lat, lon, title, color){
   var icon = L.AwesomeMarkers.icon({icon: 'map-marker', markerColor: color, prefix: 'fa'});
+  var marker = L.marker([lat, lon], {icon: icon}).addTo(map);
   var popup = '<b>' + title + '</b><br/><a href="https://www.google.com/maps/search/?api=1&query=' + lat + ',' + lon + '" target="_blank">Google Maps에서 보기</a>';
-  L.marker([lat, lon], {icon: icon}).bindPopup(popup).addTo(map);
+  marker.bindPopup(popup);
+  return marker;
 }
 
 var day1Color = 'blue';
 var day2Color = 'green';
 var day3Color = 'red';
 
-// 1일차
-makeMarker(34.6749,135.5022,'소테츠 프레사 인 오사카 신사이바시',day1Color);
-makeMarker(34.6689,135.5021,'미즈노',day1Color);
-makeMarker(34.6692,135.5041,'치보',day1Color);
-makeMarker(34.6700,135.5038,'츠루동탄 소에몬초점',day1Color);
-makeMarker(34.6687,135.5018,'도톤보리',day1Color);
-makeMarker(34.6685,135.4955,'아메리카무라',day1Color);
-makeMarker(34.6665,135.5015,'규카츠 모토무라',day1Color);
-makeMarker(34.6658,135.5025,'우오신 스시',day1Color);
-makeMarker(34.7055,135.4920,'우메다 스카이 빌딩',day1Color);
+var places = [
+  // 1일차
+  [34.6749,135.5022,'소테츠 프레사 인 오사카 신사이바시',day1Color],
+  [34.6689,135.5021,'미즈노',day1Color],
+  [34.6692,135.5041,'치보',day1Color],
+  [34.6700,135.5038,'츠루동탄 소에몬초점',day1Color],
+  [34.6687,135.5018,'도톤보리',day1Color],
+  [34.6685,135.4955,'아메리카무라',day1Color],
+  [34.6665,135.5015,'규카츠 모토무라',day1Color],
+  [34.6658,135.5025,'우오신 난바',day1Color],
+  [34.7055,135.4920,'우메다 공중정원',day1Color],
 
-// 2일차
-makeMarker(34.6749,135.5022,'숙소 출발',day2Color);
-makeMarker(34.6547,135.4290,'오사카코역',day2Color);
-makeMarker(34.6543,135.4288,'오사카 카이유칸 수족관',day2Color);
-makeMarker(34.6541,135.4281,'하나비',day2Color);
-makeMarker(34.6542,135.4279,'카이유테이',day2Color);
-makeMarker(34.6540,135.4282,'타코야키랩',day2Color);
-makeMarker(34.6539,135.4280,'앗치치혼포',day2Color);
-makeMarker(34.6545,135.4299,'산타마리아 유람선',day2Color);
-makeMarker(34.6537,135.4290,'텐포잔 대관람차',day2Color);
-makeMarker(34.6543,135.4284,'텐포잔 마켓플레이스',day2Color);
-makeMarker(34.6541,135.4286,'리쿠로오지상 치즈케이크 텐포잔점',day2Color);
-makeMarker(34.6660,135.5020,'스시로바타 키타로스시',day2Color);
+  // 2일차
+  [34.6749,135.5022,'숙소 출발',day2Color],
+  [34.6547,135.4289,'오사카코역',day2Color],
+  [34.6543,135.4287,'오사카 카이유칸 수족관',day2Color],
+  [34.65405,135.4281,'하나비',day2Color],
+  [34.65410,135.4279,'카이유테이',day2Color],
+  [34.6540,135.4282,'타코야키랩',day2Color],
+  [34.65395,135.4280,'앗치치혼포',day2Color],
+  [34.6545,135.4299,'산타마리아 유람선',day2Color],
+  [34.6537,135.4290,'텐포잔 대관람차',day2Color],
+  [34.6543,135.4284,'텐포잔 마켓플레이스',day2Color],
+  [34.6541,135.4286,'리쿠로오지상 치즈케이크 텐포잔점',day2Color],
+  [34.6660,135.5020,'스시로바타 키타로스시',day2Color],
 
-// 3일차
-makeMarker(34.6749,135.5022,'숙소 출발',day3Color);
-makeMarker(34.6873,135.5262,'오사카성 천수각',day3Color);
-makeMarker(34.6534,135.5136,'덴노지',day3Color);
-makeMarker(34.6540,135.5138,'사이제리야 덴노지점',day3Color);
-makeMarker(34.6543,135.5137,'스시로 덴노지점',day3Color);
-makeMarker(34.6695,135.5025,'와규 이다텐',day3Color);
-makeMarker(34.6531,135.5109,'덴노지 동물원',day3Color);
-makeMarker(34.6537,135.5100,'텐시바 공원',day3Color);
-makeMarker(34.6617,135.4989,'카도야쇼쿠도',day3Color);
-makeMarker(34.6642,135.5028,'551 호라이 본점',day3Color);
-makeMarker(34.6640,135.5027,'난바 OCAT',day3Color);
+  // 3일차
+  [34.6749,135.5022,'숙소 출발',day3Color],
+  [34.6873,135.5262,'오사카성 천수각',day3Color],
+  [34.6534,135.5136,'덴노지',day3Color],
+  [34.6540,135.5138,'사이제리야 덴노지점',day3Color],
+  [34.6543,135.5137,'스시로 덴노지점',day3Color],
+  [34.6695,135.5025,'와규 이다텐',day3Color],
+  [34.6531,135.5109,'덴노지 동물원',day3Color],
+  [34.6537,135.5100,'텐시바 공원',day3Color],
+  [34.6617,135.4989,'카도야쇼쿠도',day3Color],
+  [34.6642,135.5028,'551 호라이 본점',day3Color],
+  [34.6640,135.5027,'난바 OCAT',day3Color]
+];
+
+var markers = [];
+places.forEach(function(p){
+  var m = makeMarker(p[0],p[1],p[2],p[3]);
+  markers.push(m);
+});
+
+// 폴리라인 (일자별)
+var day1Line = L.polyline([
+  [34.6749,135.5022],[34.6689,135.5021],[34.6692,135.5041],[34.6700,135.5038],
+  [34.6687,135.5018],[34.6685,135.4955],[34.6665,135.5015],[34.6658,135.5025],[34.7055,135.4920]
+],{color:'#1E90FF',weight:4,opacity:0.7}).addTo(map);
+
+var day2Line = L.polyline([
+  [34.6749,135.5022],[34.6547,135.4289],[34.6543,135.4287],[34.65405,135.4281],
+  [34.65410,135.4279],[34.6540,135.4282],[34.65395,135.4280],[34.6545,135.4299],
+  [34.6537,135.4290],[34.6543,135.4284],[34.6541,135.4286],[34.6660,135.5020]
+],{color:'#32CD32',weight:4,opacity:0.7}).addTo(map);
+
+var day3Line = L.polyline([
+  [34.6749,135.5022],[34.6873,135.5262],[34.6534,135.5136],[34.6540,135.5138],
+  [34.6543,135.5137],[34.6695,135.5025],[34.6531,135.5109],[34.6537,135.5100],
+  [34.6617,135.4989],[34.6642,135.5028],[34.6640,135.5027]
+],{color:'#FF6347',weight:4,opacity:0.7}).addTo(map);
+
+var group = new L.featureGroup(markers.concat([day1Line,day2Line,day3Line]));
+map.fitBounds(group.getBounds().pad(0.15));
+
 </script>
 </body>
 </html>
-"""
-
-path = "/mnt/data/Osaka_Family_Trip_Map_v5.html"
-with open(path, "w", encoding="utf-8") as f:
-    f.write(html_content)
-
-path
