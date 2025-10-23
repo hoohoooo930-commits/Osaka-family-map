@@ -88,6 +88,7 @@ var places = [
 
 var markers = [];
 places.forEach(function(p){
+  console.log('마커 생성:', p[2], p[0], p[1]);
   var m = makeMarker(p[0],p[1],p[2],p[3]);
   markers.push(m);
 });
@@ -110,7 +111,8 @@ var day3Line = L.polyline([
   [34.6617,135.4989],[34.6642,135.5028],[34.6640,135.5027]
 ],{color:'#FF6347',weight:4,opacity:0.7}).addTo(map);
 
-var group = new L.featureGroup(markers.concat([day1Line,day2Line,day3Line]));
+// 모든 마커와 폴리라인을 그룹화
+var group = L.featureGroup(markers.concat([day1Line,day2Line,day3Line]));
 map.fitBounds(group.getBounds().pad(0.15));
 
 </script>
