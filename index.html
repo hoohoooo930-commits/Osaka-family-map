@@ -1,93 +1,94 @@
-<!doctype html>
+# 최신 위치와 일자별 색상 구분을 반영한 오사카 가족여행 지도 (Osaka_Family_Trip_Map_v5.html) 생성
+
+html_content = """<!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오사카 2박3일 가족여행 지도 (업데이트)</title>
+<title>오사카 2박3일 가족여행 지도 (v5 최신)</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.js"></script>
 <style>
   html,body,#map { height:100%; margin:0; padding:0; }
   .leaflet-popup-content { font-size:15px; line-height:1.4; }
   .topbar { position: absolute; z-index: 1000; left: 10px; top: 10px; background: rgba(255,255,255,0.95); padding:8px 10px; border-radius:8px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-family: sans-serif; }
   .legend { font-size:13px; }
-  .footernote { position: absolute; z-index:1000; right:10px; bottom:10px; background: rgba(255,255,255,0.9); padding:6px 8px; border-radius:6px; font-size:12px; }
-  a.linkbtn { color:#1565c0; text-decoration: none; font-weight:600; }
 </style>
 </head>
 <body>
 <div id="map"></div>
 <div class="topbar">
-  <strong>오사카 2박3일 가족여행</strong><br/>
+  <strong>오사카 2박3일 가족여행 지도 (v5)</strong><br/>
   <div class="legend">
-    <span style="color:#1E90FF">●</span> 1일차 &nbsp;
-    <span style="color:#32CD32">●</span> 2일차 &nbsp;
-    <span style="color:#FF4500">●</span> 3일차
+    <span style="color:#1E90FF;">●</span> 1일차 &nbsp;
+    <span style="color:#32CD32;">●</span> 2일차 &nbsp;
+    <span style="color:#FF6347;">●</span> 3일차
   </div>
 </div>
-<div class="footernote">팁: 마커 팝업의 '길찾기 (Google Maps)'을 눌러 네비게이션을 시작하세요.</div>
-<script>
-var map = L.map('map').setView([34.6690,135.5017], 13);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'© OpenStreetMap contributors'}).addTo(map);
 
-function makeMarker(lat, lon, title, descr, hours, link, color) {
-  var marker = L.circleMarker([lat,lon], {color: color, radius:6, fillOpacity:0.9}).addTo(map);
-  var popup = '<b>' + title + '</b><br/>' + descr;
-  if(hours) popup += '<br/><b>운영시간:</b> ' + hours;
-  if(link) popup += '<br/><a class="linkbtn" href="' + link + '" target="_blank">공식/예약 페이지 열기</a>';
-  popup += '<br/><a href="https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lon + '" target="_blank">길찾기 (Google Maps)</a>';
-  marker.bindPopup(popup);
-  return marker;
+<script>
+var map = L.map('map').setView([34.67,135.50], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+function makeMarker(lat, lon, title, color){
+  var icon = L.AwesomeMarkers.icon({icon: 'map-marker', markerColor: color, prefix: 'fa'});
+  var popup = '<b>' + title + '</b><br/><a href="https://www.google.com/maps/search/?api=1&query=' + lat + ',' + lon + '" target="_blank">Google Maps에서 보기</a>';
+  L.marker([lat, lon], {icon: icon}).bindPopup(popup).addTo(map);
 }
 
+var day1Color = 'blue';
+var day2Color = 'green';
+var day3Color = 'red';
+
 // 1일차
-var day1_places = [
-{lat:34.6749, lon:135.5022, title:'소테츠 프레사 인 오사카 신사이바시', descr:'호텔 체크인', hours:'24시간', link:'https://www.sotetsu-hotels.com/fresa-inn/osaka-shinsaibashi/overview/'},
-{lat:34.6689, lon:135.5021, title:'미즈노 (Mizuno)', descr:'오코노미야키 맛집', hours:'11:00–21:00', link:'https://tabelog.com/en/osaka/A2701/A270202/27000495/'},
-{lat:34.6692, lon:135.5041, title:'치보 (Chibo)', descr:'오코노미야키', hours:'11:00–22:00', link:'https://chibo.com'},
-{lat:34.6700, lon:135.5038, title:'츠루동탄', descr:'크림우동', hours:'11:00–23:00', link:'https://tsurutontan.co.jp'},
-{lat:34.6687, lon:135.5018, title:'도톤보리', descr:'도보 산책', hours:'상시', link:'https://osaka-info.jp/en/'},
-{lat:34.6691, lon:135.5002, title:'글리코사인', descr:'도톤보리 상징', hours:'상시', link:'https://osaka-info.jp/en/'},
-{lat:34.6679, lon:135.5005, title:'아메리카무라', descr:'쇼핑거리 & 카페', hours:'상시', link:'https://osaka-info.jp/en/'},
-{lat:34.6675, lon:135.5010, title:'규카츠 모토무라', descr:'규카츠 정식', hours:'11:00–22:00', link:'https://tabelog.com/en/osaka/A2701/A270202/27001234/'},
-{lat:34.6680, lon:135.5030, title:'우오신', descr:'초밥', hours:'11:00–22:00', link:'https://tabelog.com/en/osaka/A2701/A270202/27005678/'},
-{lat:34.7054, lon:135.4959, title:'우메다 공중정원', descr:'야경 전망대', hours:'10:00–22:30', link:'https://www.skybuilding.co.jp/en/observatory/')}
-];
-var day1_markers = []; day1_places.forEach(function(p){ day1_markers.push(makeMarker(p.lat,p.lon,p.title,p.descr,p.hours,p.link,'#1E90FF')); });
-var day1_poly = L.polyline(day1_places.map(p => [p.lat,p.lon]), {color:'#1E90FF', weight:4, opacity:0.8}).addTo(map);
+makeMarker(34.6749,135.5022,'소테츠 프레사 인 오사카 신사이바시',day1Color);
+makeMarker(34.6689,135.5021,'미즈노',day1Color);
+makeMarker(34.6692,135.5041,'치보',day1Color);
+makeMarker(34.6700,135.5038,'츠루동탄 소에몬초점',day1Color);
+makeMarker(34.6687,135.5018,'도톤보리',day1Color);
+makeMarker(34.6685,135.4955,'아메리카무라',day1Color);
+makeMarker(34.6665,135.5015,'규카츠 모토무라',day1Color);
+makeMarker(34.6658,135.5025,'우오신 스시',day1Color);
+makeMarker(34.7055,135.4920,'우메다 스카이 빌딩',day1Color);
 
 // 2일차
-var day2_places = [
-{lat:34.6542, lon:135.4289, title:'오사카 카이유칸', descr:'수족관', hours:'10:00–20:00', link:'https://www.kaiyukan.com/language/eng/'},
-{lat:34.6540, lon:135.4275, title:'하나비 / 카이유테이', descr:'고급 해산물', hours:'11:00–21:00', link:''},
-{lat:34.6541, lon:135.4265, title:'타코야키랩', descr:'타코야키 간식', hours:'10:00–22:00', link:''},
-{lat:34.6543, lon:135.4268, title:'앗치치혼포', descr:'타코야키', hours:'10:00–22:00', link:''},
-{lat:34.6545, lon:135.4300, title:'산타마리아 유람선', descr:'크루즈', hours:'운항시간 변동', link:'https://www.santa-maria-cruise.co.jp'},
-{lat:34.6537, lon:135.4278, title:'텐포잔 대관람차', descr:'대관람차', hours:'10:00–22:00', link:'https://www.senyo.co.jp/tempozan/en/'},
-{lat:34.6539, lon:135.4276, title:'텐포잔 마켓플레이스 / 리쿠로오지상', descr:'쇼핑 & 치즈케이크', hours:'10:00–21:00', link:'https://www.rocro.co.jp'},
-{lat:34.6550, lon:135.4285, title:'스시로바타 키타로스시', descr:'화로 초밥', hours:'11:00–22:00', link:''}
-];
-var day2_markers = []; day2_places.forEach(function(p){ day2_markers.push(makeMarker(p.lat,p.lon,p.title,p.descr,p.hours,p.link,'#32CD32')); });
-var day2_poly = L.polyline(day2_places.map(p => [p.lat,p.lon]), {color:'#32CD32', weight:4, opacity:0.8}).addTo(map);
+makeMarker(34.6749,135.5022,'숙소 출발',day2Color);
+makeMarker(34.6547,135.4290,'오사카코역',day2Color);
+makeMarker(34.6543,135.4288,'오사카 카이유칸 수족관',day2Color);
+makeMarker(34.6541,135.4281,'하나비',day2Color);
+makeMarker(34.6542,135.4279,'카이유테이',day2Color);
+makeMarker(34.6540,135.4282,'타코야키랩',day2Color);
+makeMarker(34.6539,135.4280,'앗치치혼포',day2Color);
+makeMarker(34.6545,135.4299,'산타마리아 유람선',day2Color);
+makeMarker(34.6537,135.4290,'텐포잔 대관람차',day2Color);
+makeMarker(34.6543,135.4284,'텐포잔 마켓플레이스',day2Color);
+makeMarker(34.6541,135.4286,'리쿠로오지상 치즈케이크 텐포잔점',day2Color);
+makeMarker(34.6660,135.5020,'스시로바타 키타로스시',day2Color);
 
 // 3일차
-var day3_places = [
-{lat:34.6873, lon:135.5262, title:'오사카성 천수각', descr:'오사카의 상징', hours:'9:00–17:00', link:'https://www.osakacastle.net/english/'},
-{lat:34.6580, lon:135.5330, title:'사이제리야 / 스시로', descr:'가족식 옵션', hours:'10:00–22:00', link:''},
-{lat:34.6695, lon:135.5025, title:'와규 이다텐', descr:'고급 와규 덮밥', hours:'11:00–15:00,17:00–21:00', link:''},
-{lat:34.5532, lon:135.5190, title:'덴노지 동물원 / 텐시바 공원', descr:'동물원 & 공원', hours:'9:30–17:00', link:'https://www.tennojizoo.jp'},
-{lat:34.5535, lon:135.5185, title:'카도야쇼쿠도 츠케멘 / 카페', descr:'간식', hours:'10:00–20:00', link:''},
-{lat:34.6630, lon:135.5025, title:'551 호라이 본점', descr:'교자 포장', hours:'10:00–21:00', link:''},
-{lat:34.6665, lon:135.5010, title:'난바 OCAT', descr:'리무진/공항 이동', hours:'24시간', link:'https://www.ocat.co.jp'}
-];
-var day3_markers = []; day3_places.forEach(function(p){ day3_markers.push(makeMarker(p.lat,p.lon,p.title,p.descr,p.hours,p.link,'#FF4500')); });
-var day3_poly = L.polyline(day3_places.map(p => [p.lat,p.lon]), {color:'#FF4500', weight:4, opacity:0.8}).addTo(map);
-
-// Fit map
-var allMarkers = day1_markers.concat(day2_markers, day3_markers);
-var allPolylines = [day1_poly, day2_poly, day3_poly];
-var group = new L.featureGroup(allMarkers.concat(allPolylines));
-map.fitBounds(group.getBounds().pad(0.15));
+makeMarker(34.6749,135.5022,'숙소 출발',day3Color);
+makeMarker(34.6873,135.5262,'오사카성 천수각',day3Color);
+makeMarker(34.6534,135.5136,'덴노지',day3Color);
+makeMarker(34.6540,135.5138,'사이제리야 덴노지점',day3Color);
+makeMarker(34.6543,135.5137,'스시로 덴노지점',day3Color);
+makeMarker(34.6695,135.5025,'와규 이다텐',day3Color);
+makeMarker(34.6531,135.5109,'덴노지 동물원',day3Color);
+makeMarker(34.6537,135.5100,'텐시바 공원',day3Color);
+makeMarker(34.6617,135.4989,'카도야쇼쿠도',day3Color);
+makeMarker(34.6642,135.5028,'551 호라이 본점',day3Color);
+makeMarker(34.6640,135.5027,'난바 OCAT',day3Color);
 </script>
 </body>
 </html>
+"""
+
+path = "/mnt/data/Osaka_Family_Trip_Map_v5.html"
+with open(path, "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+path
